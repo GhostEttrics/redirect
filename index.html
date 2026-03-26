@@ -1,38 +1,743 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>List of Links</title>
-  <script>
-    async function displayLinks() {
-      try {
-        const response = await fetch("https://raw.githubusercontent.com/GhostEttrics/redirect/refs/heads/main/link.txt");
-        const text = await response.text();
-        const links = text.split(/\r?\n/).map(link => link.trim()).filter(link => link);
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MineStore - A melhor loja de Minecraft do Brasil. Compre moedas, itens, ranks e muito mais com entrega automática e segura.">
+  <meta name="keywords" content="minecraft, loja minecraft, comprar minecraft, minecoins, itens minecraft, rank minecraft, servidor minecraft">
+  <meta name="author" content="MineStore">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MineStore - Loja Oficial de Minecraft">
+  <meta property="og:description" content="A melhor loja de Minecraft com entrega automática. Moedas, itens e ranks com os melhores preços!">
+  <meta property="og:image" content="https://assets.stickpng.com/images/580b57fbd9996e24bc43c2f0.png">
+  
+  <title>MineStore - Loja Oficial de Minecraft | Compre Moedas, Itens e Ranks</title>
+  
+  <link rel="canonical" href="https://minestore.com.br">
+  
+  <style>
+    /* Reset e Variáveis */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        if (links.length === 0) {
-          document.body.innerHTML = "<h2>No links found.</h2>";
-          return;
-        }
+    :root {
+      --mc-green: #588133;
+      --mc-green-dark: #3d5c22;
+      --mc-dirt: #8b5a2b;
+      --mc-stone: #7d7d7d;
+      --mc-grass: #6b8c2e;
+      --mc-wood: #6b4423;
+      --mc-gold: #ffaa00;
+      --mc-diamond: #4ce6ff;
+      --mc-emerald: #2ecc71;
+      --mc-redstone: #ff3333;
+      --mc-obsidian: #1a1a2e;
+      --mc-text: #ffffff;
+      --mc-shadow: rgba(0, 0, 0, 0.5);
+    }
 
-        let linkListHTML = "<h2>Links:</h2><ul>";
-        links.forEach((link, index) => {
-          linkListHTML += `<li>${index + 1}: <a href="${link}" target="_blank">${link}</a></li>`;
-        });
-        linkListHTML += "</ul>";
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, var(--mc-obsidian) 0%, #2d2d44 50%, var(--mc-green-dark) 100%);
+      min-height: 100vh;
+      color: var(--mc-text);
+      line-height: 1.6;
+    }
 
-        document.body.innerHTML = linkListHTML;
+    /* Header */
+    header {
+      background: linear-gradient(180deg, var(--mc-green) 0%, var(--mc-green-dark) 100%);
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 0 var(--mc-shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 4px solid var(--mc-dirt);
+    }
 
-      } catch (err) {
-        document.body.innerHTML = "<h2>Error loading links.</h2>";
-        console.error(err);
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--mc-gold);
+      text-shadow: 3px 3px 0 var(--mc-shadow);
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--mc-dirt);
+      border: 3px solid var(--mc-gold);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    .logo-icon div {
+      background: var(--mc-grass);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--mc-text);
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:hover {
+      border-color: var(--mc-gold);
+      color: var(--mc-gold);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 3rem 2rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+      border: 4px solid var(--mc-stone);
+      border-radius: 8px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: var(--mc-gold);
+      text-shadow: 4px 4px 0 var(--mc-shadow);
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+
+    /* Products Grid */
+    .products-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: var(--mc-diamond);
+      text-shadow: 3px 3px 0 var(--mc-shadow);
+      margin-bottom: 2rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: linear-gradient(145deg, rgba(91, 91, 91, 0.9) 0%, rgba(61, 61, 61, 0.9) 100%);
+      border: 4px solid var(--mc-stone);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--mc-gold);
+      box-shadow: 0 8px 0 var(--mc-shadow);
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--mc-gold);
+    }
+
+    .product-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem;
+      background: var(--mc-obsidian);
+      border: 3px solid var(--mc-stone);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .product-card h3 {
+      color: var(--mc-gold);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .product-card p {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .product-price {
+      font-size: 1.8rem;
+      color: var(--mc-emerald);
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 0 var(--mc-shadow);
+    }
+
+    .btn-buy {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(180deg, var(--mc-green) 0%, var(--mc-green-dark) 100%);
+      border: 3px solid var(--mc-dirt);
+      color: var(--mc-text);
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 0 var(--mc-shadow);
+    }
+
+    .btn-buy:hover {
+      background: linear-gradient(180deg, var(--mc-gold) 0%, #cc8800 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--mc-shadow);
+    }
+
+    .btn-buy:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--mc-shadow);
+    }
+
+    /* Delivery Page */
+    .delivery-section {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.4);
+      border: 4px solid var(--mc-stone);
+      border-radius: 8px;
+      display: none;
+    }
+
+    .delivery-section.active {
+      display: block;
+    }
+
+    .delivery-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      color: var(--mc-gold);
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 1rem;
+      background: var(--mc-obsidian);
+      border: 3px solid var(--mc-stone);
+      color: var(--mc-text);
+      font-family: inherit;
+      font-size: 1rem;
+      border-radius: 4px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--mc-gold);
+    }
+
+    .delivery-info {
+      background: rgba(92, 129, 51, 0.2);
+      border: 2px solid var(--mc-green);
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin-top: 1rem;
+    }
+
+    .delivery-info h4 {
+      color: var(--mc-gold);
+      margin-bottom: 1rem;
+    }
+
+    .delivery-steps {
+      list-style: none;
+      counter-reset: step-counter;
+    }
+
+    .delivery-steps li {
+      position: relative;
+      padding-left: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .delivery-steps li::before {
+      counter-increment: step-counter;
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      background: var(--mc-gold);
+      color: var(--mc-obsidian);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Status Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(145deg, var(--mc-obsidian) 0%, #2d2d44 100%);
+      border: 4px solid var(--mc-gold);
+      padding: 3rem;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 500px;
+      animation: modalSlide 0.3s ease;
+    }
+
+    @keyframes modalSlide {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
       }
     }
 
-    window.onload = displayLinks;
-  </script>
+    .modal-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal h2 {
+      color: var(--mc-gold);
+      margin-bottom: 1rem;
+    }
+
+    .order-id {
+      background: var(--mc-obsidian);
+      padding: 1rem;
+      border: 2px dashed var(--mc-gold);
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      letter-spacing: 3px;
+    }
+
+    .btn-close {
+      padding: 1rem 2rem;
+      background: var(--mc-redstone);
+      border: 3px solid #cc0000;
+      color: var(--mc-text);
+      font-family: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 1rem;
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--mc-obsidian);
+      border-top: 4px solid var(--mc-dirt);
+      padding: 2rem;
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--mc-text);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--mc-gold);
+    }
+
+    .copyright {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Schema.org Structured Data */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
-  <p>Loading links...</p>
+  <!-- Schema.org Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "MineStore",
+    "description": "Loja oficial de produtos Minecraft com entrega automática",
+    "url": "https://minestore.com.br",
+    "logo": "https://minestore.com.br/logo.png",
+    "priceRange": "$$",
+    "acceptsReservations": "False"
+  }
+  </script>
+
+  <header>
+    <nav>
+      <div class="logo">
+        <div class="logo-icon">
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div>
+        </div>
+        MineStore
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home">Início</a></li>
+        <li><a href="#products">Produtos</a></li>
+        <li><a href="#delivery">Entrega</a></li>
+        <li><a href="#support">Suporte</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <h1>🎮 Bem-vindo à MineStore</h1>
+      <p>A melhor loja de Minecraft do Brasil! Compre moedas, itens raros, ranks VIP e muito mais com entrega automática e 100% segura.</p>
+    </section>
+
+    <section id="products" class="products-section">
+      <h2 class="section-title">⛏️ Nossos Produtos</h2>
+      <div class="products-grid">
+        <article class="product-card">
+          <div class="product-icon">💎</div>
+          <h3>1000 MineCoins</h3>
+          <p>Moedas premium para usar em qualquer servidor parceiro</p>
+          <div class="product-price">R$ 29,90</div>
+          <button class="btn-buy" onclick="openDelivery('1000 MineCoins', 29.90)">Comprar Agora</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-icon">👑</div>
+          <h3>Rank VIP</h3>
+          <p>Acesso exclusivo a áreas VIP, kits especiais e comandos únicos</p>
+          <div class="product-price">R$ 49,90</div>
+          <button class="btn-buy" onclick="openDelivery('Rank VIP', 49.90)">Comprar Agora</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-icon">⚔️</div>
+          <h3>Kit Lendário</h3>
+          <p>Armadura completa encantada + espada lendária</p>
+          <div class="product-price">R$ 39,90</div>
+          <button class="btn-buy" onclick="openDelivery('Kit Lendário', 39.90)">Comprar Agora</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-icon">🏰</div>
+          <h3>Plot Premium</h3>
+          <p>Terro de construção ampliado no servidor criativo</p>
+          <div class="product-price">R$ 19,90</div>
+          <button class="btn-buy" onclick="openDelivery('Plot Premium', 19.90)">Comprar Agora</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-icon">🌟</div>
+          <h3>5000 MineCoins</h3>
+          <p>Pacote econômico de moedas com bônus de 25%</p>
+          <div class="product-price">R$ 99,90</div>
+          <button class="btn-buy" onclick="openDelivery('5000 MineCoins', 99.90)">Comprar Agora</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-icon">🔥</div>
+          <h3>Rank MVP+</h3>
+          <p>O rank mais poderoso! Todos os benefícios + prioridade na fila</p>
+          <div class="product-price">R$ 99,90</div>
+          <button class="btn-buy" onclick="openDelivery('Rank MVP+', 99.90)">Comprar Agora</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="delivery" class="delivery-section">
+      <h2 class="section-title">📦 Entrega do Produto</h2>
+      <form class="delivery-form" onsubmit="processOrder(event)">
+        <div class="form-group">
+          <label for="product">Produto Selecionado</label>
+          <input type="text" id="product" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Seu Username no Minecraft</label>
+          <input type="text" id="username" required placeholder="Ex: Steve123" pattern="[A-Za-z0-9_]{3,16}" title="Username deve ter 3-16 caracteres (letras, números e underscores)">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Seu E-mail</label>
+          <input type="email" id="email" required placeholder="seu@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="server">Servidor</label>
+          <select id="server" required>
+            <option value="">Selecione o servidor</option>
+            <option value="brasil">Brasil #1</option>
+            <option value="brasil2">Brasil #2</option>
+            <option value="usa">Estados Unidos</option>
+            <option value="europa">Europa</option>
+          </select>
+        </div>
+
+        <div class="delivery-info">
+          <h4>ℹ️ Como funciona a entrega:</h4>
+          <ol class="delivery-steps">
+            <li>Preencha seus dados corretamente acima</li>
+            <li>Clique em "Finalizar Compra"</li>
+            <li>Você será redirecionado para o pagamento</li>
+            <li>Após confirmação, o produto será entregue automaticamente em até 5 minutos</li>
+            <li>Verifique seu inventário no jogo ou use o comando /kit</li>
+          </ol>
+        </div>
+
+        <button type="submit" class="btn-buy">Finalizar Compra</button>
+      </form>
+    </section>
+
+    <section id="support" class="products-section">
+      <h2 class="section-title">❓ Dúvidas Frequentes</h2>
+      <div class="products-grid">
+        <article class="product-card">
+          <h3>⏱️ Quanto tempo demora a entrega?</h3>
+          <p>A entrega é automática e ocorre em até 5 minutos após a confirmação do pagamento.</p>
+        </article>
+
+        <article class="product-card">
+          <h3>🔒 É seguro comprar aqui?</h3>
+          <p>Sim! Utilizamos sistemas de pagamento seguros e não pedimos sua senha do Minecraft.</p>
+        </article>
+
+        <article class="product-card">
+          <h3>📧 Preciso de nota fiscal?</h3>
+          <p>Todas as compras incluem nota fiscal enviada automaticamente para seu e-mail.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-icon">✅</div>
+      <h2>Pedido Realizado!</h2>
+      <p>Seu pedido foi criado com sucesso. Anote seu número:</p>
+      <div class="order-id" id="order-id">#MINE-000000</div>
+      <p>Redirecionando para pagamento...</p>
+      <button class="btn-close" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="#">Termos de Uso</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Contato</a>
+        <a href="#">Discord</a>
+      </div>
+      <p class="copyright">© 2024 MineStore. Não afiliado oficialmente à Mojang AB.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll para navegação
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Abrir página de entrega
+    function openDelivery(product, price) {
+      document.getElementById('product').value = `${product} - R$ ${price.toFixed(2).replace('.', ',')}`;
+      document.getElementById('delivery').classList.add('active');
+      document.getElementById('delivery').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Processar pedido
+    function processOrder(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const server = document.getElementById('server').value;
+      const product = document.getElementById('product').value;
+
+      // Validação básica
+      if (!username || !email || !server) {
+        alert('Por favor, preencha todos os campos!');
+        return;
+      }
+
+      // Gerar ID do pedido
+      const orderId = '#MINE-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+      document.getElementById('order-id').textContent = orderId;
+
+      // Mostrar modal de sucesso
+      document.getElementById('modal').classList.add('active');
+
+      // Aqui você integraria com seu sistema de pagamento
+      // Exemplo: Stripe, PayPal, Mercado Pago, etc.
+      console.log('Pedido:', { orderId, product, username, email, server });
+
+      // Simular redirecionamento para pagamento após 3 segundos
+      setTimeout(() => {
+        // window.location.href = '/checkout?order=' + orderId;
+        console.log('Redirecionar para checkout...');
+      }, 3000);
+    }
+
+    // Fechar modal
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    // Fechar modal ao clicar fora
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // Animação de entrada dos cards
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'all 0.5s ease';
+      observer.observe(card);
+    });
+  </script>
 </body>
 </html>
